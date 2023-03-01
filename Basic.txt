@@ -1,0 +1,24 @@
+Create a Snowflake account: To get started with Snowflake, we create an account on the Snowflake website. We used the enterprise version.
+
+Create a Snowflake warehouse,database: Once you have a Snowflake account, the next step is to create a warehouse. There are various sizes of the warehouse. 
+You can choose based on your requirements. We need to take ninto account the role which creates the warehouse and datbase.If needed provide the access to other roles.
+
+Load data into Snowflake: After creating a database, you can start loading data into Snowflake. You can load data from various sources, including files, databases, and data warehouses. 
+We did 2 types: manual and by connecting S3.
+
+Manual: Is wherein you write the SQL queries to insert the data into the table
+S3: The data files are stored in S3 buckets,we connect our Snowflake accounts and S3 bucket. For this we need to update the IAM trust policies.
+
+Query data in Snowflake: Snowflake provides a powerful SQL interface for querying data. 
+
+Manage users and security: Snowflake provides a robust security model that allows you to control access to your data. You can create users and roles, grant and revoke privileges, and monitor user activity.
+
+
+---------------------------------------------
+S3 and IAM:
+
+Create S3 bucket
+Create IAM policy
+Create IAM role
+Link AWS to Snowflake using external stage
+Load data into Snowflake

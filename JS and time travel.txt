@@ -1,0 +1,46 @@
+Snowflake natively supports Python,Java and Scala.
+But Javascript can be used by integrating it with other tools and platforms that support JavaScript. Here are a few ways to use JavaScript in Snowflake:
+
+JavaScript UDFs: Create User-Defined Functions (UDFs) in Snowflake using JavaScript. To do this, you can write your JavaScript code in an external file and upload it to Snowflake as a JavaScript UDF or write it using the Worksheet. Snowflake supports JavaScript UDFs through the use of the Node.js engine.
+
+Snowflake Stored Procedures: Snowflake supports stored procedures that can be written in JavaScript using the Node.js engine. You can create stored procedures in Snowflake that call JavaScript UDFs to perform complex calculations or data transformations.
+
+Snowflake Web User Interface: Snowflake provides a web-based user interface that includes a JavaScript-based console. You can use the console to run JavaScript code against your Snowflake database, perform queries, and analyze data.
+
+Integration with other tools: Snowflake provides integrations with other tools and platforms that support JavaScript, such as Apache Kafka and AWS Lambda. You can use these integrations to trigger JavaScript code in Snowflake based on events or changes in other systems.
+
+The JavaScript API for stored procedures is similar to, but not identical to, the APIs in Snowflake connectors and drivers (Node.js, JDBC, Python, etc.).
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+By default, Snowflake keeps deleted data for a period of 1 day, but you can configure the retention period to be longer, up to a maximum of 90 days. Once the retention period has elapsed, the deleted data is purged from the system and cannot be retrieved.
+
+If you need to retain deleted data for longer than the retention period, you can enable Time Travel in your Snowflake account. Time Travel allows you to recover data that has been deleted or changed within a specified time range, up to the maximum retention period. However, Time Travel is not a substitute for backup and recovery, and it should not be relied upon as a long-term data retention strategy.
+
+To enable Time Travel in Snowflake, you need to:
+
+Determine the time range for which you want to enable Time Travel.
+Set the Time Travel retention period for your account, which can be up to 90 days.
+Use the Time Travel feature to query and recover deleted or changed data within the specified time range.
+It's important to note that enabling Time Travel may incur additional storage costs, as Snowflake needs to keep copies of the data for the retention period. Therefore, it's important to balance the need for data retention with the cost implications of enabling Time Travel.
+
+https://hevodata.com/learn/snowflake-time-travel/
+https://docs.snowflake.com/en/sql-reference/stored-procedures-javascript
+https://docs.snowflake.com/en/user-guide/data-time-travel
+https://docs.snowflake.com/en/user-guide/data-time-travel#label-time-travel-data-retention-period
+https://medium.com/@11amitvishwas/time-travelling-feature-in-snowflake-a04f517bd7f0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
