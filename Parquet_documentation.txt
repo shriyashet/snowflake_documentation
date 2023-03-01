@@ -1,0 +1,63 @@
+--create and use database for parquet data
+create database parquet_db;
+use parquet_db
+
+--create and use schema for parquet data
+create schema parquet_schema;
+use schema parquet_schema
+
+--grant database access to sysadmin
+grant usage on database parquet_db to role sysadmin;
+
+--create new integration parquet_integration
+create storage integration parquet_integration
+TYPE = EXTERNAL_STAGE
+STORAGE_PROVIDER = S3
+ENABLED = TRUE
+STORAGE_AWS_ROLE_ARN ='arn:aws:iam::*********'
+STORAGE_ALLOWED_LOCATIONS = ('s3:/****');
+
+--describe integration 
+--use this to get the IAM_USER_ARN and AWS_EXTERNAL_ID which need to be updated in the IAM trust policy JSON
+desc integration parquet_integration
+
+-- creating file object for parquet, the fields are different 
+--refer https://docs.snowflake.com/en/sql-reference/sql/create-file-format
+create or replace file format parquet_file
+type = PARQUET
+
+--create the target table definition
+create or replace table reg_data(
+Reg_date_time varchar,
+Id int,
+First_name varchar,
+Last_name varchar,
+Email varchar,
+Gender varchar,
+IP_address varchar,
+CC varchar,
+Country varchar,
+Birthdate varchar,
+Salary float,
+Title varchar,
+Comments varchar
+);
+
+-- create stage
+create or replace stage parquet_stage
+url = 's3:/****' 
+storage_integration = parquet_integration--storage integration name
+file_format =parquet_file --file format object name
+
+--view stage
+list @parquet_stage
+
+--copy data from stage into snowflake table
+--refer https://docs.snowflake.com/en/sql-reference/sql/copy-into-table
+copy into reg_data from @parquet_stage
+ON_ERROR = 'skip_file'
+MATCH_BY_COLUMN_NAME= CASE_INSENSITIVE
+
+--display the data
+select * from reg_data
+---------------------------------------------------------------------------

@@ -1,0 +1,64 @@
+--create and use database and schema
+use database test;
+create schema test_schema;
+use schema test_schema;
+
+--usage permission to sysyadmin 
+grant usage on database test to role sysadmin;
+
+--  Integration between snowflake and s3
+CREATE STORAGE INTEGRATION cardata_int
+TYPE = EXTERNAL_STAGE
+STORAGE_PROVIDER = S3
+ENABLED = TRUE
+STORAGE_AWS_ROLE_ARN ='arn:aws:iam::******'
+STORAGE_ALLOWED_LOCATIONS = ('s3:/***');
+
+describe integration cardata_int;
+
+-- creating file object
+create or replace file format car_data
+type = CSV
+skip_header = 1 -- skip the first row
+field_optionally_enclosed_by = '"'-- for multiple lines of data separated by comma engrossed inside''
+field_delimiter = ','
+empty_field_as_null = True
+
+-- create table
+create table cardata(
+Car_Name varchar,
+Year_ int,
+Selling_Price float,
+Present_Price float,
+Kms_Driven int,
+Fuel_Type varchar,
+Seller_Type varchar,
+Transmission varchar,
+Owner int);
+
+-- create stage
+create or replace stage cardata_stage
+url = 's3:/**' 
+storage_integration = cardata_int--storage integration name
+file_format =car_data --file format object name
+
+-- viewing the stage
+list @cardata_stage
+
+--copy data from stage to raw table
+copy into cardata
+from @cardata_stage
+ON_ERROR = 'skip_file';
+
+--display ht erecords in cardata
+select * from cardata
+
+--Creating snowpipe query
+CREATE OR REPLACE pipe car_data_pipe
+auto_ingest = TRUE
+AS
+COPY INTO cardata
+FROM @cardata_stage;
+
+--describing the snow pipe
+desc pipe car_data_pipe
